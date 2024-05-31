@@ -1,0 +1,107 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation template for internet access security group"
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: "The ID of the VPC to use for this stack's resources"
+
+Resources:
+  InternetAccess:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group allowing inbound and outbound traffic"
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+      - IpProtocol: udp
+        FromPort: 15000
+        ToPort: 15001
+        CidrIp: 10.90.0.154/32
+        Description: "Kaspersky"
+      - IpProtocol: udp
+        FromPort: 15001
+        ToPort: 15001
+        CidrIp: 10.90.0.199/32
+        Description: "Relay Kaspersky"
+      - IpProtocol: udp
+        FromPort: 15000
+        ToPort: 15000
+        CidrIp: 10.90.0.199/32
+        Description: "Relay Kaspersky"
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 13295
+        ToPort: 13295
+        CidrIp: 10.90.0.199/32
+        Description: "Relay Kaspersky"
+      - IpProtocol: tcp
+        FromPort: 17111
+        ToPort: 17111
+        CidrIp: 10.90.0.154/32
+        Description: "Kaspersky"
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+        Description: "Access HTTP to Internet"
+      - IpProtocol: udp
+        FromPort: 15111
+        ToPort: 15111
+        CidrIp: 10.90.0.154/32
+        Description: "Kaspersky"
+      - IpProtocol: tcp
+        FromPort: 23111
+        ToPort: 23111
+        CidrIp: 0.0.0.0/0
+        Description: "Kaspersky"
+      - IpProtocol: tcp
+        FromPort: 13111
+        ToPort: 13111
+        CidrIp: 10.90.0.199/32
+        Description: "Relay Kaspersky"
+      - IpProtocol: tcp
+        FromPort: 13000
+        ToPort: 13000
+        CidrIp: 10.90.0.154/32
+        Description: "Kaspersky"
+      - IpProtocol: udp
+        FromPort: 15111
+        ToPort: 15111
+        CidrIp: 10.90.0.199/32
+        Description: "Relay Kaspersky"
+      - IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0
+        Description: "Access HTTPS to Internet"
+      - IpProtocol: tcp
+        FromPort: 13295
+        ToPort: 13295
+        CidrIp: 10.90.0.154/32
+        Description: "Kaspersky"
+      - IpProtocol: tcp
+        FromPort: 7844
+        ToPort: 7844
+        CidrIp: 0.0.0.0/0
+        Description: "CloudFlare EXPIRED 25/05/2024"
+      - IpProtocol: tcp
+        FromPort: 13111
+        ToPort: 13111
+        CidrIp: 10.90.0.154/32
+        Description: "Kaspersky"
+      - IpProtocol: udp
+        FromPort: 17111
+        ToPort: 17111
+        CidrIp: 10.90.0.199/32
+        Description: "Relay Kaspersky"
+      - IpProtocol: tcp
+        FromPort: 13000
+        ToPort: 13000
+        CidrIp: 10.90.0.199/32
+        Description: "Relay Kaspersky"
+
+# Outputs (optional)
+Outputs:
+  SecurityGroupId:
+    Description: ID of the created security group
+    Value: !Ref InternetAccess
